@@ -18,6 +18,25 @@ function userName() {
   localStorage.setItem("userName", nameInput.value);
 }
 
+function checkIsCompleted(param = todoListItems) {
+  let todoItem = document.querySelector(".todo-list").children;
+  param.map((data, index) => {
+    if (data.isCompleted === true) {
+      todoItem[index].children[0].setAttribute("isCompleted", "true");
+    } else {
+      todoItem[index].children[0].setAttribute("isCompleted", "false");
+    }
+  });
+}
+
+function checkArrayUndefined() {
+  for (let i = 0; i < todoListItems.length; i++) {
+    if (todoListItems[i] === undefined) {
+      todoListItems.splice(i, 1);
+      i--;
+    }
+  }
+}
 
 function addDomTodo(content, id) {
   const li = document.createElement("li");
@@ -41,7 +60,70 @@ function addDomTodo(content, id) {
     checkIsCompleted();
   };
 
-  
+  deleteButton.onclick = () => {
+    todoListItems.map((data, index) => {
+      if (data.content === input.value) {
+        delete todoListItems[index];
+      }
+    });
+    li.remove();
+    checkArrayUndefined();
+    deleteMockAPI(id);
+  };
+
+  li.appendChild(input);
+  li.appendChild(completedButton);
+  li.appendChild(deleteButton);
+  todoList.appendChild(li);
+}
+
+addBtn.onclick = () => {
+  let regex = /(?!^$)([^\s]){3,}/g;
+  if (regex.test(todoInput.value)) {
+    addDomTodo(todoInput.value);
+
+    todoListItems.push({
+      content: todoInput.value,
+      isCompleted: false,
+      id: `${todoListItems.length + 1}`,
+    });
+    postMockAPI(todoInput.value);
+    todoInput.value = "";
+  }
+  checkIsCompleted();
+};
+
+completedBtn.onclick = () => {
+  let completed = todoListItems.filter((data) => data.isCompleted);
+  todoList.innerHTML = "";
+  completed.map((data) => addDomTodo(data.content, data.id));
+  checkIsCompleted(completed);
+};
+
+activeBtn.onclick = () => {
+  let active = todoListItems.filter((data) => data.isCompleted === false);
+  todoList.innerHTML = "";
+  active.map((data) => addDomTodo(data.content, data.id));
+};
+
+const allButton = (allBtn.onclick = () => {
+  todoList.innerHTML = "";
+  todoListItems.map((data) => addDomTodo(data.content, data.id));
+  checkIsCompleted();
+});
+
+clearCopletedBtn.onclick = () => {
+  todoListItems.map((data, index) => {
+    if (data.isCompleted === true) {
+      deleteMockAPI(data.id);
+      delete todoListItems[index];
+    }
+  });
+
+  checkArrayUndefined();
+  allButton();
+};
+
 async function getMockAPI() {
   fetch("https://61c4e388f1af4a0017d9984f.mockapi.io/todos/")
     .then((response) => response.json())
