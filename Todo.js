@@ -61,11 +61,9 @@ function addDomTodo(content, id) {
   };
 
   deleteButton.onclick = () => {
-    todoListItems.map((data, index) => {
-      if (data.content === input.value) {
-        delete todoListItems[index];
-      }
-    });
+    todoListItems.map((data, index) =>
+      data.content === input.value ? delete todoListItems[index] : false
+    );
     li.remove();
     checkArrayUndefined();
     deleteMockAPI(id);
@@ -80,17 +78,12 @@ function addDomTodo(content, id) {
 addBtn.onclick = () => {
   let regex = /(?!^$)([^\s]){3,}/g;
   if (regex.test(todoInput.value)) {
-    addDomTodo(todoInput.value);
-
-    todoListItems.push({
-      content: todoInput.value,
-      isCompleted: false,
-      id: `${todoListItems.length + 1}`,
-    });
+    todoListItems.push({ content: todoInput.value });
+    todoList.innerHTML = "<h3>Yükleniyor...</h3>";
     postMockAPI(todoInput.value);
+    setTimeout(getMockAPI, 200);
     todoInput.value = "";
   }
-  checkIsCompleted();
 };
 
 completedBtn.onclick = () => {
@@ -125,17 +118,18 @@ clearCopletedBtn.onclick = () => {
 };
 
 async function getMockAPI() {
-  fetch("https://61c4e388f1af4a0017d9984f.mockapi.io/todos/")
+  await fetch("https://61c4e388f1af4a0017d9984f.mockapi.io/todos/")
     .then((response) => response.json())
     .then((data) => (todoListItems = data))
+    .then(() => (todoList.innerHTML = ""))
     .then(() => todoListItems.map((data) => addDomTodo(data.content, data.id)))
     .then(() => checkIsCompleted());
 }
 
-async function postMockAPI(content) {
+async function postMockAPI(content, isCompleted, id) {
   fetch("https://61c4e388f1af4a0017d9984f.mockapi.io/todos/", {
     method: "POST",
-    body: JSON.stringify({ content: content }),
+    body: JSON.stringify({ content }),
     headers: { "Content-type": "application/json; charset=UTF-8" },
   });
 }
