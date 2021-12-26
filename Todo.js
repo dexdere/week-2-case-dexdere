@@ -18,8 +18,30 @@ function userName() {
   localStorage.setItem("userName", nameInput.value);
 }
 
-function addDomTodo(content, id) {}
 
+function addDomTodo(content, id) {
+  const li = document.createElement("li");
+  const input = document.createElement("input");
+  const completedButton = document.createElement("button");
+  const deleteButton = document.createElement("button");
+
+  input.classList.add(`todo-${id}`);
+  input.value = content;
+  completedButton.innerHTML = "✓";
+  deleteButton.innerHTML = "X";
+
+  completedButton.onclick = () => {
+    todoListItems.map((data) => {
+      if (data.content === input.value) {
+        data.isCompleted = !data.isCompleted;
+        input.setAttribute("isCompleted", `${data.isCompleted}`);
+        putMockAPI(data.id, data.isCompleted);
+      }
+    });
+    checkIsCompleted();
+  };
+
+  
 async function getMockAPI() {
   fetch("https://61c4e388f1af4a0017d9984f.mockapi.io/todos/")
     .then((response) => response.json())
