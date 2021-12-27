@@ -28,7 +28,7 @@ function checkIsCompleted(param = todoListItems) {
 function checkArrayUndefined() {
   for (let index = 0; index < todoListItems.length; index++) {
     if (todoListItems[index] === undefined) {
-      todoListItems.splice(i, 1);
+      todoListItems.splice(index, 1);
       index--;
     }
   }
@@ -40,13 +40,13 @@ function addDomTodo(content, isCompleted, id) {
   const completedButton = document.createElement("button");
   const deleteButton = document.createElement("button");
 
-  // input.classList.add(`content-${id}`);
   input.value = content;
   completedButton.innerHTML = "✓";
   deleteButton.innerHTML = "X";
 
   input.addEventListener("change", function () {
     putMockAPI(input.value, isCompleted, id);
+    setTimeout(getMockAPI, 300);
   });
 
   completedButton.onclick = () => {
