@@ -1,4 +1,8 @@
-# Ödev 2
+# Ödev 2 - Todo
+
+[![Netlify Status](https://api.netlify.com/api/v1/badges/ca9aa699-276e-4ec0-b2e9-0b1fb913a38a/deploy-status)](https://app.netlify.com/sites/practical-meitner-dc0442.netlify.app)
+<br>
+[Live Demo](https://practical-meitner-dc0442.netlify.app)
 
 Merhaba arkadaşlar 🙌
 
@@ -18,14 +22,12 @@ Kendi profilinize cloneladığınız proje TODO app imiz için API endpointiniz 
 - Yeni todo eklenirken input fieldi boş olmamalı, minimum 3 karakter içermeli.
 
 - Promise, .then veya async/await ile asenkron işlemleri gerçekleştirebilirsiniz.
-<br/>
+  <br/>
 
-**BONUS 1:**  Asenkron işlemleri gerçekleştirken, kullanıcıya istek gerçekleştirme sırasında Spinner veya Skeleton gösterebilirsiz.
+**BONUS 1:** Asenkron işlemleri gerçekleştirken, kullanıcıya istek gerçekleştirme sırasında Spinner veya Skeleton gösterebilirsiz.
 <br/>
 **BONUS 2:** 🌙 Dark Mode : Kullanıcının dark mode tercihini localestorage da saklayarak uygulamanıza dark mode ekleyebilirsiniz.
 
 Sorularınız olursa discord veya telegram üzerinden sorabilirsiniz.
 
 Kolay gelsin 🚀
-
-
