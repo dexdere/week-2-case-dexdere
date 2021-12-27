@@ -6,55 +6,55 @@ const activeBtn = document.querySelector(".btn-active");
 const completedBtn = document.querySelector(".btn-completed");
 const clearCopletedBtn = document.querySelector(".btn-clear-completed");
 const todoList = document.querySelector(".todo-list");
+const todoItem = document.querySelector(".todo-list").children;
 
 let todoListItems;
 
 getMockAPI();
 
 nameInput.value = localStorage.getItem("userName");
-nameInput.addEventListener("input", userName);
-
-function userName() {
-  localStorage.setItem("userName", nameInput.value);
-}
+nameInput.addEventListener("input", () =>
+  localStorage.setItem("userName", nameInput.value)
+);
 
 function checkIsCompleted(param = todoListItems) {
-  let todoItem = document.querySelector(".todo-list").children;
   param.map((data, index) => {
-    if (data.isCompleted === true) {
-      todoItem[index].children[0].setAttribute("isCompleted", "true");
-    } else {
-      todoItem[index].children[0].setAttribute("isCompleted", "false");
-    }
+    data.isCompleted === true
+      ? todoItem[index].children[0].setAttribute("isCompleted", "true")
+      : todoItem[index].children[0].setAttribute("isCompleted", "false");
   });
 }
 
 function checkArrayUndefined() {
-  for (let i = 0; i < todoListItems.length; i++) {
-    if (todoListItems[i] === undefined) {
+  for (let index = 0; index < todoListItems.length; index++) {
+    if (todoListItems[index] === undefined) {
       todoListItems.splice(i, 1);
-      i--;
+      index--;
     }
   }
 }
 
-function addDomTodo(content, id) {
+function addDomTodo(content, isCompleted, id) {
   const li = document.createElement("li");
   const input = document.createElement("input");
   const completedButton = document.createElement("button");
   const deleteButton = document.createElement("button");
 
-  input.classList.add(`todo-${id}`);
+  // input.classList.add(`content-${id}`);
   input.value = content;
   completedButton.innerHTML = "✓";
   deleteButton.innerHTML = "X";
+
+  input.addEventListener("change", function () {
+    putMockAPI(input.value, isCompleted, id);
+  });
 
   completedButton.onclick = () => {
     todoListItems.map((data) => {
       if (data.content === input.value) {
         data.isCompleted = !data.isCompleted;
         input.setAttribute("isCompleted", `${data.isCompleted}`);
-        putMockAPI(data.id, data.isCompleted);
+        putMockAPI(data.content, data.isCompleted, data.id);
       }
     });
     checkIsCompleted();
@@ -81,7 +81,7 @@ addBtn.onclick = () => {
     todoListItems.push({ content: todoInput.value });
     todoList.innerHTML = "<h3>Yükleniyor...</h3>";
     postMockAPI(todoInput.value);
-    setTimeout(getMockAPI, 200);
+    setTimeout(getMockAPI, 300);
     todoInput.value = "";
   }
 };
@@ -118,11 +118,15 @@ clearCopletedBtn.onclick = () => {
 };
 
 async function getMockAPI() {
-  await fetch("https://61c4e388f1af4a0017d9984f.mockapi.io/todos/")
+  fetch("https://61c4e388f1af4a0017d9984f.mockapi.io/todos/")
     .then((response) => response.json())
     .then((data) => (todoListItems = data))
     .then(() => (todoList.innerHTML = ""))
-    .then(() => todoListItems.map((data) => addDomTodo(data.content, data.id)))
+    .then(() =>
+      todoListItems.map((data) =>
+        addDomTodo(data.content, data.isCompleted, data.id)
+      )
+    )
     .then(() => checkIsCompleted());
 }
 
@@ -134,7 +138,7 @@ async function postMockAPI(content, isCompleted, id) {
   });
 }
 
-async function putMockAPI(id, isCompleted, content) {
+async function putMockAPI(content, isCompleted, id) {
   fetch(`https://61c4e388f1af4a0017d9984f.mockapi.io/todos/${id}`, {
     method: "PUT",
     body: JSON.stringify({
