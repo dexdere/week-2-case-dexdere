@@ -12,11 +12,13 @@ let todoListItems;
 
 getMockAPI();
 
+// Kullanıcıdan İsim girdisi alıp local storage'da saklıyor.
 nameInput.value = localStorage.getItem("userName");
 nameInput.addEventListener("input", () =>
   localStorage.setItem("userName", nameInput.value)
 );
 
+// Todo'ları kontrol ediyor isComplete değerine göre CSS atıyor.
 function checkIsCompleted(param = todoListItems) {
   param.map((data, index) => {
     data.isCompleted === true
@@ -25,6 +27,7 @@ function checkIsCompleted(param = todoListItems) {
   });
 }
 
+// todoListItems değişkenini kontrol edip "undefined" değerleri temizliyor.
 function checkArrayUndefined() {
   for (let index = 0; index < todoListItems.length; index++) {
     if (todoListItems[index] === undefined) {
@@ -34,6 +37,7 @@ function checkArrayUndefined() {
   }
 }
 
+// Dom'a todoları ve todoların gerekli baglantılarını ekliyor.
 function addDomTodo(content, isCompleted, id) {
   const li = document.createElement("li");
   const input = document.createElement("input");
@@ -112,11 +116,11 @@ clearCopletedBtn.onclick = () => {
       delete todoListItems[index];
     }
   });
-
   checkArrayUndefined();
   allButton();
 };
 
+// MockAPI'dan verileri çekip DOM'a ekliyor.
 async function getMockAPI() {
   fetch("https://61c4e388f1af4a0017d9984f.mockapi.io/todos/")
     .then((response) => response.json())
@@ -130,7 +134,7 @@ async function getMockAPI() {
     .then(() => checkIsCompleted());
 }
 
-async function postMockAPI(content, isCompleted, id) {
+async function postMockAPI(content) {
   fetch("https://61c4e388f1af4a0017d9984f.mockapi.io/todos/", {
     method: "POST",
     body: JSON.stringify({ content }),
