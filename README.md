@@ -1,8 +1,8 @@
 # Ödev 2 - Todo
 
-[![Netlify Status](https://api.netlify.com/api/v1/badges/ca9aa699-276e-4ec0-b2e9-0b1fb913a38a/deploy-status)](https://app.netlify.com/sites/practical-meitner-dc0442.netlify.app)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/edf42bb1-b9b9-42c6-bcfe-fb3e6dc1e387/deploy-status)](https://app.netlify.com/sites/todoapp-patika/deploys)
 <br>
-[Live Demo](https://practical-meitner-dc0442.netlify.app)
+[Live Demo](https://todoapp-patika.netlify.app/)
 
 Merhaba arkadaşlar 🙌
 
